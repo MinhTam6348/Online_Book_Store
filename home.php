@@ -103,7 +103,7 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
 
                 <div class="home-filter__page">
                     <span class="home-filter__page-num">
-                        <span class="home-filter__page-current">1</span>/14
+                        <span class="home-filter__page-current">1</span>
                     </span>
 
                     <div class="home-filter__page-controls">
@@ -125,6 +125,9 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
                             $where  = " where CONCAT('[',REPLACE(category_ids,',','],['),']') LIKE '%[".$cid."]%'  ";
                         }
                         $books = $conn->query("SELECT * from books $where order by title asc");
+                        if($cid == 'all'){
+                            $books = $conn->query("SELECT * from books order by title asc");
+                        }
                         if($books->num_rows <= 0){
                             echo "<center><h4><i>Sách không có sẵn.</i></h4></center>";
                         } 
@@ -216,24 +219,7 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
                 <li class="pagination-item pagination-item--active">
                     <a href="" class="pagination-item__link">1</a>                               
                 </li>
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">2</a>                               
-                </li>
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">3</a>                               
-                </li>
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">4</a>                               
-                </li>
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">5</a>                               
-                </li>
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">...</a>                               
-                </li>
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">14</a>                               
-                </li>
+                
 
                 <li class="pagination-item">
                     <a href="" class="pagination-item__link">
