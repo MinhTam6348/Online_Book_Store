@@ -281,7 +281,7 @@
             
             <div class="footer-bottom">
                 <div class="grid wide">
-                    <p class="footer__text">Copyright © 2022 <?php echo $_SESSION['system']['name'] ?> - Nền tảng bán sách online hàng đầu</p>
+                    <p class="footer__text">Copyright © 2023 <?php echo $_SESSION['system']['name'] ?> - Nền tảng bán sách online hàng đầu</p>
                 </div>
             </div>
         </footer>

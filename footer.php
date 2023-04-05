@@ -155,4 +155,5 @@ window.alert_toast= function($msg = 'TEST',$bg = 'success'){
 
         <script src="js/scripts.js"></script>
         <script src="js/validator.js"></script>
+        
        

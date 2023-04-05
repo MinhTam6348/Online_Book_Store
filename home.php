@@ -27,7 +27,15 @@ $query_pro = mysqli_query($conn,$sql_pro);
     .bid-tag {
     position: absolute;
     right: .5em;
-}
+    }
+
+    .price__product {
+        margin-left : 8px;
+    }
+
+    .copper__character {
+        font-size : 16px;
+    }
 </style>
 <?php 
 $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
@@ -99,38 +107,32 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
                         </li>
                         
                     </ul>
-                </div>
-
-                <div class="home-filter__page">
-                    <span class="home-filter__page-num">
-                        <span class="home-filter__page-current">1</span>
-                    </span>
-
-                    <div class="home-filter__page-controls">
-                        <a href="" class="home-filter__page-btn home-filter__page-btn--disable">
-                            <i class="home-filter__page-icon fas fa-angle-left"></i>
-                        </a>
-                        <a href="" class="home-filter__page-btn">
-                            <i class="home-filter__page-icon fas fa-angle-right"></i>
-                        </a>
-                    </div>
-                </div>
+                </div>               
             </div>
 
             <div class="card product__contain">
                 <div class="row sm-gutter">
                     <?php
                         $where = "";
+                        $item_per_page = !empty($_GET['per_page'])?$_GET['per_page']:20;
+                        $current_page = !empty($_GET['pages'])?$_GET['pages']:1;
+                        $offset = ($current_page - 1) * $item_per_page; 
                         if($cid > 0){
                             $where  = " where CONCAT('[',REPLACE(category_ids,',','],['),']') LIKE '%[".$cid."]%'  ";
                         }
-                        $books = $conn->query("SELECT * from books $where order by title asc");
+                        $books = $conn->query("SELECT * from books $where order by title asc LIMIT  ".$item_per_page. " OFFSET " .$offset );
+                        $bookss = $conn->query("SELECT * from books $where order by title asc");
+                        $booksss = $bookss->num_rows;
+                        $totalPages = ceil($booksss / $item_per_page);
                         if($cid == 'all'){
-                            $books = $conn->query("SELECT * from books order by title asc");
+                            $books = $conn->query("SELECT * from books order by title asc LIMIT " .$item_per_page. " OFFSET " .$offset);
+                            $bookss = $conn->query("SELECT * from books order by title asc");
+                            $booksss = $bookss->num_rows;
+                            $totalPages = ceil($booksss / $item_per_page);
                         }
                         if($books->num_rows <= 0){
                             echo "<center><h4><i>Sách không có sẵn.</i></h4></center>";
-                        } 
+                        }
                         while($row=$books->fetch_assoc()):
                         ?>
 
@@ -148,8 +150,8 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
                                                     <h4 class="home-product-item__name"><?php echo $row['title'] ?></h4>
                                                     <div class="home-product-item__sub-information">
                                                         <div class="home-product-item__price-current">
-                                                            <span class="copper__character">₫</span>
                                                             <span class="price__product"><?php echo number_format($row['price']) ?></span>
+                                                            <span class="copper__character">₫</span>
                                                         </div>
                                                         <?php
                                                           $qry = $conn->query("SELECT SUM(qty) AS 'booksold' FROM `order_list` WHERE book_id = ".$row['id']);
@@ -182,8 +184,8 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
                                                     <h4 class="home-product-item__name"><?php echo $row['title'] ?></h4>
                                                     <div class="home-product-item__sub-information">
                                                         <div class="home-product-item__price-current">
-                                                            <span class="copper__character">₫</span>
                                                             <span class="price__product"><?php echo number_format($row['price']) ?></span>
+                                                            <span class="copper__character">₫</span>
                                                         </div>
                                                         <?php
                                                           $qry = $conn->query("SELECT SUM(qty) AS 'booksold' FROM `order_list` WHERE book_id = ".$row['id']);
@@ -208,25 +210,10 @@ $cid = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
                     <?php endwhile; ?>
                 </div>
             </div>
-
-            <ul class="pagination home-product__pagination">
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">
-                        <i class="pagination-item__icon fas fa-angle-left"></i>
-                    </a>
-                </li>
-
-                <li class="pagination-item pagination-item--active">
-                    <a href="" class="pagination-item__link">1</a>                               
-                </li>
-                
-
-                <li class="pagination-item">
-                    <a href="" class="pagination-item__link">
-                        <i class="pagination-item__icon fas fa-angle-right"></i>
-                    </a>       
-                </li>
-            </ul>
+            
+            <?php
+                include 'pagination.php'
+            ?>
         </div>
     </div>
 </div>

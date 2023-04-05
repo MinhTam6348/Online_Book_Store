@@ -167,7 +167,7 @@
                         <p class="product-sold">Đã bán <?php echo isset($booksold) ? $booksold : '0' ?>  </p>
                     </div>
                     <div class="product-price__wrap">
-                        <p>₫<?php echo number_format($price) ?></p>
+                        <p><?php echo number_format($price) ?> đ</p>
                     </div>
                     <div class="product__ship-to-address">
                         <div class="product__amount-title">Vận chuyển</div>
@@ -453,7 +453,7 @@
             
             <div class="footer-bottom">
                 <div class="grid wide">
-                    <p class="footer__text">Copyright © 2022 <?php echo $_SESSION['system']['name'] ?> - Nền tảng bán sách online hàng đầu</p>
+                    <p class="footer__text">Copyright © 2023 <?php echo $_SESSION['system']['name'] ?> - Nền tảng bán sách online hàng đầu</p>
                 </div>
             </div>
         </footer>
